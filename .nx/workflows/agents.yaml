@@ -1,0 +1,8 @@
+launch-templates:
+  local-small:
+    resource-class: 'docker_linux_amd64/small'
+    image: 'docker.io/library/node:20-bookworm-slim'
+    init-steps:
+      - name: Describe the machine
+        script: |
+          echo "init step on $(uname -a)"

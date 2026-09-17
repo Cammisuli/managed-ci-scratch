@@ -1,0 +1,13 @@
+triggers:
+  main-pushes:
+    event: PUSH
+    branches: [main]
+
+workflows:
+  checks:
+    runs-on: local-small
+    steps:
+      - name: Say hello
+        script: echo "hello from managed CI"
+      - name: Show node
+        script: node --version
