@@ -7,7 +7,14 @@ workflows:
   checks:
     runs-on: local-small
     steps:
-      - name: Say hello
-        script: echo "hello from managed CI"
-      - name: Show node
-        script: node --version
+      - name: Produce a value
+        script: echo "GREETING=hello from checks" >> "$NX_CLOUD_ENV"
+      - name: Consume it
+        script: echo "$GREETING"
+  versions:
+    runs-on: local-small
+    steps:
+      - name: Record node version
+        script: echo "NODE_VERSION=$(node --version)" >> "$NX_CLOUD_ENV"
+      - name: Print it
+        script: echo "node is $NODE_VERSION"
