@@ -1,0 +1,24 @@
+triggers:
+  main-pushes:
+    event: PUSH
+    branches: [main]
+  pull-requests:
+    event: PR
+
+workflows:
+  checks:
+    runs-on: local-small
+    steps:
+      - name: Produce a value
+        script: echo "GREETING=hello from checks" >> "$NX_CLOUD_ENV"
+      - name: Consume it
+        script: echo "$GREETING"
+      - name: Print range
+        script: echo "range NX_BASE=$NX_BASE NX_HEAD=$NX_HEAD"
+  versions:
+    runs-on: local-small
+    steps:
+      - name: Record node version
+        script: echo "NODE_VERSION=$(node --version)" >> "$NX_CLOUD_ENV"
+      - name: Print it
+        script: echo "node is $NODE_VERSION"
