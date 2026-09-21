@@ -1,17 +1,10 @@
 launch-templates:
   local-small:
     resource-class: 'docker_linux_amd64/small'
-    image: 'docker.io/library/node:20-bookworm-slim'
+    image: 'docker.io/library/node:20-bookworm'
     init-steps:
       - name: Describe the machine
         script: |
           echo "init step on $(uname -a)"
-      - name: Install git
-        script: apt-get update -qq && apt-get install -y -qq git >/dev/null
       - name: Checkout
-        script: |
-          git init -q .
-          git remote add origin "$GIT_REPOSITORY_URL"
-          git fetch -q --depth=1 origin "$NX_COMMIT_SHA"
-          git checkout -q --force --detach FETCH_HEAD
-          git rev-parse HEAD
+        uses: 'nrwl/nx-cloud-workflows/v5/workflow-steps/checkout/main.yaml'
