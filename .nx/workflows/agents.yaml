@@ -9,4 +9,9 @@ launch-templates:
       - name: Install git
         script: apt-get update -qq && apt-get install -y -qq git >/dev/null
       - name: Checkout
-        uses: 'nrwl/nx-cloud-workflows/v5/workflow-steps/checkout/main.yaml'
+        script: |
+          git init -q .
+          git remote add origin "$GIT_REPOSITORY_URL"
+          git fetch -q --depth=1 origin "$NX_COMMIT_SHA"
+          git checkout -q --force --detach FETCH_HEAD
+          git rev-parse HEAD
