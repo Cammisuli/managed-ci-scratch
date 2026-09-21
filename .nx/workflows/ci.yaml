@@ -15,6 +15,8 @@ workflows:
         script: echo "$GREETING"
       - name: Print range
         script: echo "range NX_BASE=$NX_BASE NX_HEAD=$NX_HEAD"
+      - name: Print stored variable
+        script: echo "DEMO_SECRET=$DEMO_SECRET"
   versions:
     runs-on: local-small
     steps:
