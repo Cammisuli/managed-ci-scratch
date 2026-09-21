@@ -2,6 +2,8 @@ triggers:
   main-pushes:
     event: PUSH
     branches: [main]
+  pull-requests:
+    event: PR
 
 workflows:
   checks:
@@ -11,6 +13,8 @@ workflows:
         script: echo "GREETING=hello from checks" >> "$NX_CLOUD_ENV"
       - name: Consume it
         script: echo "$GREETING"
+      - name: Print range
+        script: echo "range NX_BASE=$NX_BASE NX_HEAD=$NX_HEAD"
   versions:
     runs-on: local-small
     steps:
