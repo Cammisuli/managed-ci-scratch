@@ -6,21 +6,14 @@ triggers:
     event: PR
 
 workflows:
-  checks:
+  main:
     runs-on: local-small
+    distribute: true
     steps:
-      - name: Produce a value
-        script: echo "GREETING=hello from checks" >> "$NX_CLOUD_ENV"
-      - name: Consume it
-        script: echo "$GREETING"
-      - name: Print range
-        script: echo "range NX_BASE=$NX_BASE NX_HEAD=$NX_HEAD"
-      - name: Print stored variable
-        script: echo "DEMO_SECRET=$DEMO_SECRET"
+      - name: Affected build
+        script: npx nx affected -t build test
   versions:
     runs-on: local-small
     steps:
       - name: Record node version
-        script: echo "NODE_VERSION=$(node --version)" >> "$NX_CLOUD_ENV"
-      - name: Print it
-        script: echo "node is $NODE_VERSION"
+        script: echo "node is $(node --version)"
