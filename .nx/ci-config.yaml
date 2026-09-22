@@ -1,2 +1,2 @@
 dte:
-  distribute-on: 2 local-small
+  distribute-on: 2 linux-medium-js

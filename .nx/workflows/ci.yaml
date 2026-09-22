@@ -7,7 +7,7 @@ triggers:
 
 workflows:
   main:
-    runs-on: local-small
+    runs-on: linux-medium-js
     distribute: true
     steps:
       - name: Affected build
