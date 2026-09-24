@@ -9,5 +9,5 @@ workflows:
   main:
     runs-on: local-small
     steps:
-      - name: Sleep (verify 5b - cancel while disabled)
-        script: sleep 40
+      - name: Sleep (verify 5c - completes naturally while disabled)
+        script: sleep 15
