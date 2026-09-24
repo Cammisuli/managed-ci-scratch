@@ -7,13 +7,7 @@ triggers:
 
 workflows:
   main:
-    runs-on: linux-medium-js
-    distribute: true
-    steps:
-      - name: Affected build
-        script: npx nx affected -t build test
-  versions:
     runs-on: local-small
     steps:
-      - name: Record node version
-        script: echo "node is $(node --version)"
+      - name: Sleep (verify 5b - cancel while disabled)
+        script: sleep 40
