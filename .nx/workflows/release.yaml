@@ -1,0 +1,11 @@
+triggers:
+  release-tags:
+    event: PUSH
+    tags: ['v*']
+
+workflows:
+  release:
+    runs-on: linux-medium-js
+    steps:
+      - name: Record node version
+        script: echo "release on $(node --version)"
