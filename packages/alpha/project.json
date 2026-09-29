@@ -4,7 +4,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "node -e \"console.log('alpha build pr'); setTimeout(() => {}, 20000)\""
+        "command": "node -e \"console.log('alpha build 14069'); setTimeout(() => {}, 20000)\""
       }
     },
     "test": {

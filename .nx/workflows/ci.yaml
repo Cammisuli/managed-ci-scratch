@@ -12,8 +12,3 @@ workflows:
     steps:
       - name: Affected build
         script: npx nx affected -t build test
-  versions:
-    runs-on: local-small
-    steps:
-      - name: Record node version
-        script: echo "node is $(node --version)"
