@@ -5,7 +5,7 @@ triggers:
 
 workflows:
   release:
-    runs-on: linux-medium-js
+    runs-on: local-small
     steps:
       - name: Record node version
         script: echo "release on $(node --version)"
