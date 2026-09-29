@@ -2,11 +2,10 @@ triggers:
   main-pushes:
     event: PUSH
     branches: [main]
-    bogus: true
 
 workflows:
-  bad:
+  setup-fails:
     runs-on: local-small
     steps:
-      - name: Noop
-        script: echo hi
+      - name: Fail setup
+        script: exit 1
