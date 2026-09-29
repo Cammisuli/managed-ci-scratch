@@ -1,0 +1,17 @@
+{
+  "name": "gamma",
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node -e \"console.log('gamma build'); setTimeout(() => {}, 2000)\""
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node -e \"console.log('gamma test'); setTimeout(() => {}, 2000)\""
+      }
+    }
+  }
+}

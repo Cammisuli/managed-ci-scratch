@@ -10,3 +10,5 @@ launch-templates:
           echo "init step on $(uname -a)"
       - name: Checkout
         uses: 'nrwl/nx-cloud-workflows/v5/workflow-steps/checkout/main.yaml'
+      - name: Install dependencies
+        script: npm install

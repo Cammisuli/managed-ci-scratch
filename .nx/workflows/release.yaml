@@ -1,11 +1,11 @@
 triggers:
-  main-pushes:
+  release-tags:
     event: PUSH
-    branches: [main]
+    tags: ['v*']
 
 workflows:
-  checks:
+  release:
     runs-on: local-small
     steps:
       - name: Record node version
-        script: echo "node is $(node --version)"
+        script: echo "release on $(node --version)"

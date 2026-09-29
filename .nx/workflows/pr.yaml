@@ -1,11 +1,11 @@
 triggers:
-  main-pushes:
-    event: PUSH
+  pull-requests:
+    event: PR
     branches: [main]
 
 workflows:
-  checks:
+  pr-checks:
     runs-on: local-small
     steps:
       - name: Record node version
-        script: echo "node is $(node --version)"
+        script: echo "pr on $(node --version)"
