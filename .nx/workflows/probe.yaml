@@ -4,12 +4,12 @@ triggers:
     branches: [main]
 
 workflows:
-  readperm:
+  idtok:
     runs-on: local-small
-    permissions: { repository-contents: read }
+    permissions: { id-token: write }
     steps:
       - name: Tag and push
         script: |
-          t=readperm-$(git rev-parse --short HEAD)
+          t=idtok-$(git rev-parse --short HEAD)
           echo "TAG=$t"
           git tag $t && git push origin $t
