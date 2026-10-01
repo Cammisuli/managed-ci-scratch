@@ -4,12 +4,12 @@ triggers:
     branches: [main]
 
 workflows:
-  idtok:
+  admin:
     runs-on: local-small
-    permissions: { id-token: write }
+    permissions: { repository-contents: admin }
     steps:
       - name: Tag and push
         script: |
-          t=idtok-$(git rev-parse --short HEAD)
+          t=admin-$(git rev-parse --short HEAD)
           echo "TAG=$t"
           git tag $t && git push origin $t
