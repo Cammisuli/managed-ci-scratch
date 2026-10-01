@@ -1,15 +1,15 @@
 triggers:
   probe-trigger:
-    event: PUSH
+    event: PR
     branches: [main]
 
 workflows:
-  admin:
+  pr:
     runs-on: local-small
-    permissions: { repository-contents: admin }
+    permissions: { repository-contents: write }
     steps:
       - name: Tag and push
         script: |
-          t=admin-$(git rev-parse --short HEAD)
+          t=pr-$(git rev-parse --short HEAD)
           echo "TAG=$t"
           git tag $t && git push origin $t
