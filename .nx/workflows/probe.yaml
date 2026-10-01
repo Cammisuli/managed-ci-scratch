@@ -4,12 +4,11 @@ triggers:
     branches: [main]
 
 workflows:
-  push:
+  noperm:
     runs-on: local-small
-    permissions: { repository-contents: write }
     steps:
       - name: Tag and push
         script: |
-          t=push-$(git rev-parse --short HEAD)
+          t=noperm-$(git rev-parse --short HEAD)
           echo "TAG=$t"
           git tag $t && git push origin $t
