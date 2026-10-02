@@ -10,7 +10,7 @@
     "test": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "node -e \"console.log('alpha test'); setTimeout(() => {}, 2000)\""
+        "command": "node -e \"console.log('alpha test pr'); setTimeout(() => {}, 2000)\""
       }
     }
   }
