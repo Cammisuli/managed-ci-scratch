@@ -3,6 +3,7 @@ triggers:
     event: PUSH
     branches:
       - main
+      - fake-main-check
 
 workflows:
   main:
