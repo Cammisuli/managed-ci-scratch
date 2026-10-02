@@ -1,44 +1,56 @@
 name: publish
 on:
-  push:
-    tags:
-      - '[0-9][0-9][0-9][0-9].[0-9][0-9].*'
-permissions:
-  checks: read
-  contents: read
+  check_run:
+    types: [completed]
 jobs:
   publish:
+    # Only a green managed CI main build of a main commit, reported by the Nx Cloud app.
+    if: >-
+      github.event.check_run.app.id == 4995183 &&
+      github.event.check_run.name == 'managed-ci-main / main' &&
+      github.event.check_run.conclusion == 'success' &&
+      github.event.check_run.check_suite.head_branch == 'main'
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      checks: read
+      contents: write
+    env:
+      HEAD_SHA: ${{ github.event.check_run.head_sha }}
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.check_run.head_sha }}
           fetch-depth: 0
+      - name: Commit must be on main
+        run: |
+          git fetch origin main
+          git merge-base --is-ancestor "$HEAD_SHA" origin/main
       - name: Wait for managed CI checks
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           NAME="managed-ci-main / checks"
           for i in $(seq 1 80); do
-            RUN=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/check-runs" --jq ".check_runs[] | select(.name == \"$NAME\") | [.status, .conclusion] | @tsv" | head -1)
+            RUN=$(gh api "repos/$GITHUB_REPOSITORY/commits/$HEAD_SHA/check-runs" --jq ".check_runs[] | select(.name == \"$NAME\") | [.status, .conclusion] | @tsv" | head -1)
             echo "attempt $i: ${RUN:-not reported yet}"
             case "$RUN" in
               completed*)
                 CONCLUSION=$(echo "$RUN" | cut -f2)
-                if [ "$CONCLUSION" != "success" ]; then
-                  echo "::error::$NAME concluded $CONCLUSION"
-                  exit 1
-                fi
-                exit 0
-                ;;
+                [ "$CONCLUSION" = "success" ] && exit 0
+                echo "::error::$NAME concluded $CONCLUSION"; exit 1 ;;
             esac
             sleep 15
           done
-          echo "::error::$NAME did not complete within 20 minutes"
-          exit 1
-      - name: Tagged commit must be on main
+          echo "::error::$NAME did not complete within 20 minutes"; exit 1
+      - name: Tag the release
         run: |
-          git fetch origin main
-          git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+          CALVER_PREFIX=$(TZ=UTC git show -s --format=%cd --date=format-local:'%y%m.%d' HEAD)
+          COMMIT_DAY=$(TZ=UTC git show -s --format=%cd --date=format-local:'%Y-%m-%d' HEAD)
+          BUILD_NUMBER=$(TZ=UTC git rev-list --count --first-parent --since="$COMMIT_DAY 00:00:00" HEAD)
+          TAG="$CALVER_PREFIX.$(printf '%04d' "$BUILD_NUMBER")"
+          echo "TAG=$TAG" >> "$GITHUB_ENV"
+          git tag "$TAG" HEAD
+          git push origin "$TAG"
       - name: Publish
-        run: echo "Publishing $GITHUB_REF_NAME ($GITHUB_SHA)"
+        run: echo "Publishing $TAG ($HEAD_SHA)"
