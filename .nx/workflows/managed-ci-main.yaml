@@ -1,0 +1,38 @@
+triggers:
+  main-pushes:
+    event: PUSH
+    branches:
+      - main
+
+workflows:
+  main:
+    runs-on: linux-medium-js
+    distribute: true
+    permissions:
+      repository-contents: write
+    steps:
+      - name: Affected build
+        script: npx nx affected -t build test
+      - name: Tag the release
+        script: |
+          set -euo pipefail
+          if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+            git fetch --unshallow origin
+          fi
+          CALVER_PREFIX=$(TZ=UTC git show -s --format=%cd --date=format-local:'%y%m.%d' HEAD)
+          COMMIT_DAY=$(TZ=UTC git show -s --format=%cd --date=format-local:'%Y-%m-%d' HEAD)
+          BUILD_NUMBER=$(TZ=UTC git rev-list --count --first-parent --since="$COMMIT_DAY 00:00:00" HEAD)
+          if [ -z "$BUILD_NUMBER" ] || [ "$BUILD_NUMBER" -lt 1 ]; then BUILD_NUMBER=1; fi
+          TAG="$CALVER_PREFIX.$(printf '%04d' "$BUILD_NUMBER")"
+          echo "Calver: $TAG"
+          if [ "$(git rev-parse -q --verify "refs/tags/$TAG^{commit}" || true)" = "$(git rev-parse HEAD)" ]; then
+            echo "$TAG already points at HEAD"
+            exit 0
+          fi
+          git tag "$TAG" HEAD
+          git push origin "$TAG"
+  checks:
+    runs-on: linux-medium-js
+    steps:
+      - name: Show projects
+        script: npx nx show projects

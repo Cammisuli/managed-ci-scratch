@@ -1,7 +1,4 @@
 triggers:
-  main-pushes:
-    event: PUSH
-    branches: [main]
   pull-requests:
     event: PR
 
@@ -12,3 +9,8 @@ workflows:
     steps:
       - name: Affected build
         script: npx nx affected -t build test
+  checks:
+    runs-on: linux-medium-js
+    steps:
+      - name: Show projects
+        script: npx nx show projects

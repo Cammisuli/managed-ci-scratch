@@ -1,0 +1,44 @@
+name: publish
+on:
+  push:
+    tags:
+      - '[0-9][0-9][0-9][0-9].[0-9][0-9].*'
+permissions:
+  checks: read
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wait for managed CI checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          NAME="managed-ci-main / checks"
+          for i in $(seq 1 80); do
+            RUN=$(gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/check-runs" --jq ".check_runs[] | select(.name == \"$NAME\") | [.status, .conclusion] | @tsv" | head -1)
+            echo "attempt $i: ${RUN:-not reported yet}"
+            case "$RUN" in
+              completed*)
+                CONCLUSION=$(echo "$RUN" | cut -f2)
+                if [ "$CONCLUSION" != "success" ]; then
+                  echo "::error::$NAME concluded $CONCLUSION"
+                  exit 1
+                fi
+                exit 0
+                ;;
+            esac
+            sleep 15
+          done
+          echo "::error::$NAME did not complete within 20 minutes"
+          exit 1
+      - name: Tagged commit must be on main
+        run: |
+          git fetch origin main
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+      - name: Publish
+        run: echo "Publishing $GITHUB_REF_NAME ($GITHUB_SHA)"
