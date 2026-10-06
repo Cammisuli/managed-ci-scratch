@@ -9,11 +9,9 @@ workflows:
   main:
     runs-on: linux-medium-js
     steps:
-      - name: coe
-        continue-on-error: true
-        script: exit 1
-      - name: next
-        script: echo next-ran
+      - name: slow
+        timeout-minutes: 1
+        script: sleep 120; echo late
   checks:
     runs-on: linux-medium-js
     steps:
