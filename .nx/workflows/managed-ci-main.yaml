@@ -21,7 +21,7 @@ workflows:
           E02: ${{ format('{{literal}} {0}', 'x') }}
           E03: ${{ join(fromJSON('["a","b","c"]'), '+') }}
           E04: ${{ toJSON(fromJSON('{"a":[1,2],"b":null}')) }}
-          E05: ${{ fromJSON('{"items":[{"name":"x"},{"name":"y"}]}').items.*.name }}
+          E05: ${{ toJSON(fromJSON('{"items":[{"name":"x"},{"name":"y"}]}').items.*.name) }}
           E06: ${{ join(fromJSON('{"items":[{"name":"x"},{"name":"y"}]}').items.*.name, ',') }}
           E07: ${{ contains('Hello World', 'WORLD') }}
           E08: ${{ contains(fromJSON('["a","B"]'), 'b') }}
@@ -57,7 +57,7 @@ workflows:
           E38: ${{ contains(toJSON(fromJSON('{"k":"v"}')), '"k"') }}
           E39: ${{ fromJSON('[]')[5] }}
           E40: ${{ format('{0}', fromJSON('{"a":1}')) }}
-        script: node -e 'for (const k of Object.keys(process.env).filter(k=>/^E\d\d$/.test(k)).sort()) console.log("EXPR " + k + "=" + JSON.stringify(process.env[k]))'
+        script: node -e 'for (let i=1;i<=40;i++){const k="E"+String(i).padStart(2,"0"); const v=process.env[k]; console.log("EXPR "+k+" "+(v===undefined?"UNSET":"HEX:"+Buffer.from(v).toString("hex")))}'
       - name: Template input
         uses: Cammisuli/managed-ci-scratch/main/.nx/steps/expr.yaml
         inputs:
