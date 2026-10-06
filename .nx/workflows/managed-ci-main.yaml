@@ -18,6 +18,8 @@ workflows:
         uses: Cammisuli/managed-ci-scratch/main/.nx/steps/expr.yaml
         inputs:
           x: "${{ secrets.Y }}"
+      - name: Malformed expression
+        script: echo ${{ foo( }}
       - name: Affected build
         script: npx nx affected -t build test
   checks:
