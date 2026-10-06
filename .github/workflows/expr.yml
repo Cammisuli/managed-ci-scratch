@@ -1,21 +1,13 @@
-# verify 21 re-run 3 after executor fix 1efccbffac
-triggers:
-  main-pushes:
-    event: PUSH
-    branches:
-      - main
-
-workflows:
-  main:
-    runs-on: linux-medium-js
-    distribute: true
+name: expr
+on: push
+jobs:
+  expr:
+    runs-on: ubuntu-latest
+    env:
+      FOO: foo-value
     steps:
-      - name: Build ${{ env.FOO }}
-        env:
-          NX_WORKING_DIRECTORY: "${{ format('{0}', 'sub') }}"
-          HASH: "${{ hashFiles('pnpm-lock.yaml') }}"
-        script: echo ${{ nxcloud.sha }} ${{ env.FOO }} ${{ runner.os }} ${{ github.sha }}; echo "nx-hash=$HASH"; pwd
-      - name: Expression probes
+      - uses: actions/checkout@v4
+      - name: expr
         env:
           E01: ${{ format('{0}-{1}-{0}', 'a', 'b') }}
           E02: ${{ format('{{literal}} {0}', 'x') }}
@@ -57,15 +49,4 @@ workflows:
           E38: ${{ contains(toJSON(fromJSON('{"k":"v"}')), '"k"') }}
           E39: ${{ fromJSON('[]')[5] }}
           E40: ${{ format('{0}', fromJSON('{"a":1}')) }}
-        script: node -e 'for (const k of Object.keys(process.env).filter(k=>/^E\d\d$/.test(k)).sort()) console.log("EXPR " + k + "=" + JSON.stringify(process.env[k]))'
-      - name: Template input
-        uses: Cammisuli/managed-ci-scratch/main/.nx/steps/expr.yaml
-        inputs:
-          x: "${{ secrets.Y }}"
-      - name: Affected build
-        script: npx nx affected -t build test
-  checks:
-    runs-on: linux-medium-js
-    steps:
-      - name: Show projects
-        script: npx nx show projects
+        run: node -e 'for (const k of Object.keys(process.env).filter(k=>/^E\d\d$/.test(k)).sort()) console.log("EXPR " + k + "=" + JSON.stringify(process.env[k]))'
