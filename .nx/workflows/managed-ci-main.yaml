@@ -9,28 +9,11 @@ workflows:
   main:
     runs-on: linux-medium-js
     steps:
-      - name: pp-a
-        uses: Cammisuli/managed-ci-scratch/main/.nx/steps/pp/main.yaml
-        inputs:
-          label: a
-      - name: pp-b
-        uses: Cammisuli/managed-ci-scratch/main/.nx/steps/pp/main.yaml
-        inputs:
-          label: b
-      - name: pd-c
-        uses: Cammisuli/managed-ci-scratch/main/.nx/steps/pd/main.yaml
-        inputs:
-          label: c
-      - name: fail
+      - name: coe
+        continue-on-error: true
         script: exit 1
-      - name: plain
-        script: echo should-not-run
-      - name: always
-        if: always()
-        script: sleep 60; echo always-ran
-      - name: on-failure
-        if: ${{ failure() }}
-        script: echo failure-ran
+      - name: next
+        script: echo next-ran
   checks:
     runs-on: linux-medium-js
     steps:
