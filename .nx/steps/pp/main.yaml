@@ -1,0 +1,11 @@
+name: Pre and post (pp)
+description: Prints a line per phase
+inputs:
+  - name: label
+    default: x
+definition:
+  using: node
+  pre: .nx/steps/pp/pre.js
+  main: .nx/steps/pp/main.js
+  post: .nx/steps/pp/post.js
+  post-if: always()

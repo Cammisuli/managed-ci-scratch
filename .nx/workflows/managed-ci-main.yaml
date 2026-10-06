@@ -1,4 +1,4 @@
-# verify 21 re-run 3 after executor fix 1efccbffac
+# verify 22
 triggers:
   main-pushes:
     event: PUSH
@@ -8,62 +8,29 @@ triggers:
 workflows:
   main:
     runs-on: linux-medium-js
-    distribute: true
     steps:
-      - name: Build ${{ env.FOO }}
-        env:
-          NX_WORKING_DIRECTORY: "${{ format('{0}', 'sub') }}"
-          HASH: "${{ hashFiles('pnpm-lock.yaml') }}"
-        script: echo ${{ nxcloud.sha }} ${{ env.FOO }} ${{ runner.os }} ${{ github.sha }}; echo "nx-hash=$HASH"; pwd
-      - name: Expression demo
-        env:
-          E01: ${{ format('{0}-{1}-{0}', 'a', 'b') }}
-          E02: ${{ format('{{literal}} {0}', 'x') }}
-          E03: ${{ join(fromJSON('["a","b","c"]'), '+') }}
-          E04: ${{ toJSON(fromJSON('{"a":[1,2],"b":null}')) }}
-          E05: ${{ toJSON(fromJSON('{"items":[{"name":"x"},{"name":"y"}]}').items.*.name) }}
-          E06: ${{ join(fromJSON('{"items":[{"name":"x"},{"name":"y"}]}').items.*.name, ',') }}
-          E07: ${{ contains('Hello World', 'WORLD') }}
-          E08: ${{ contains(fromJSON('["a","B"]'), 'b') }}
-          E09: ${{ startsWith('Refs/Heads/main', 'refs/') }}
-          E10: ${{ endsWith('file.YAML', '.yaml') }}
-          E11: ${{ '1' == 1 }}
-          E12: ${{ null == 0 }}
-          E13: ${{ '' == false }}
-          E14: ${{ 'abc' == 'ABC' }}
-          E15: ${{ 0x10 == 16 }}
-          E16: ${{ 1e3 == 1000 }}
-          E17: ${{ 'a' < 'B' }}
-          E18: ${{ null || 'fallback' }}
-          E19: ${{ 'first' && 'second' }}
-          E20: ${{ '' || 0 || 'last' }}
-          E21: ${{ !'' }}
-          E22: ${{ !(1 == 2) }}
-          E23: ${{ (1 < 2) == true }}
-          E24: ${{ 1 < 2 == true }}
-          E25: ${{ fromJSON('[1,2,3]')[1] }}
-          E26: ${{ fromJSON('{"a":{"b":"deep"}}')['a'].b }}
-          E27: ${{ env.FOO }}
-          E28: ${{ format('{0}', env.MISSING) }}
-          E29: ${{ toJSON(env.MISSING) }}
-          E30: ${{ 'it''s' }}
-          E31: ${{ format('{0} {1}', true, 1.50) }}
-          E32: ${{ 1.0 == 1 }}
-          E33: ${{ fromJSON('1.0') }}
-          E34: ${{ toJSON(true) }}
-          E35: ${{ hashFiles('sub/*', 'pnpm-lock.yaml') }}
-          E36: ${{ hashFiles('does-not-exist/*') }}
-          E37: pre-${{ format('{0}', 'x') }}-mid-${{ 1 == 1 }}-post
-          E38: ${{ contains(toJSON(fromJSON('{"k":"v"}')), '"k"') }}
-          E39: ${{ fromJSON('[]')[5] }}
-          E40: ${{ format('{0}', fromJSON('{"a":1}')) }}
-        script: node expressions/print.js
-      - name: Template input
-        uses: Cammisuli/managed-ci-scratch/main/.nx/steps/expr.yaml
+      - name: pp-a
+        uses: Cammisuli/managed-ci-scratch/main/.nx/steps/pp/main.yaml
         inputs:
-          x: "${{ secrets.Y }}"
-      - name: Affected build
-        script: npx nx affected -t build test
+          label: a
+      - name: pp-b
+        uses: Cammisuli/managed-ci-scratch/main/.nx/steps/pp/main.yaml
+        inputs:
+          label: b
+      - name: pd-c
+        uses: Cammisuli/managed-ci-scratch/main/.nx/steps/pd/main.yaml
+        inputs:
+          label: c
+      - name: fail
+        script: exit 1
+      - name: plain
+        script: echo should-not-run
+      - name: always
+        if: always()
+        script: sleep 60; echo always-ran
+      - name: on-failure
+        if: ${{ failure() }}
+        script: echo failure-ran
   checks:
     runs-on: linux-medium-js
     steps:
