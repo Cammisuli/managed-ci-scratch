@@ -1,3 +1,4 @@
+# verify 21 re-run after fixes 704a15e3c2 and b8d9911572
 triggers:
   main-pushes:
     event: PUSH
