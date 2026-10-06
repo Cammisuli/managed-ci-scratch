@@ -9,6 +9,15 @@ workflows:
     runs-on: linux-medium-js
     distribute: true
     steps:
+      - name: Build ${{ env.FOO }}
+        env:
+          NX_WORKING_DIRECTORY: "${{ format('{0}', 'sub') }}"
+          HASH: "${{ hashFiles('pnpm-lock.yaml') }}"
+        script: echo ${{ nxcloud.sha }} ${{ env.FOO }} ${{ runner.os }} ${{ github.sha }}; echo "nx-hash=$HASH"; pwd
+      - name: Template input
+        uses: Cammisuli/managed-ci-scratch/main/.nx/steps/expr.yaml
+        inputs:
+          x: "${{ secrets.Y }}"
       - name: Affected build
         script: npx nx affected -t build test
   checks:

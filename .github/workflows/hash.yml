@@ -1,0 +1,10 @@
+name: hash
+on:
+  push:
+    branches: [main]
+jobs:
+  hash:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "gha-hash=${{ hashFiles('pnpm-lock.yaml') }}"

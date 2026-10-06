@@ -1,0 +1,13 @@
+name: Expression input check
+description: Reads its input through an expression
+inputs:
+  - name: x
+    default: ''
+definition:
+  using: aggregated
+  steps:
+    - name: Check input
+      env:
+        GOT: '${{ inputs.x }}'
+      script: |
+        [ "$GOT" = "$Y" ] && echo input-ok
