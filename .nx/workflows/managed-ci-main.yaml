@@ -41,7 +41,8 @@ workflows:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         script: echo ctl=$(env | grep -c -e '^GH_TOKEN=')
       - name: api
-        script: curl -s -o /dev/null -w 'api=%{http_code}\n' -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY"
+        script: |
+          curl -s -o /dev/null -w 'api=%{http_code}\n' -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY"
   checks:
     runs-on: linux-medium-js
     steps:
