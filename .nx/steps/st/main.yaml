@@ -1,0 +1,11 @@
+name: State and inputs (st)
+description: Writes GITHUB_STATE in main, reads it in post
+inputs:
+  - name: label
+    default: x
+  - name: extra
+    default: e
+definition:
+  using: node
+  main: .nx/steps/st/main.js
+  post: .nx/steps/st/post.js

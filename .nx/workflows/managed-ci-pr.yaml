@@ -7,6 +7,8 @@ workflows:
     runs-on: linux-medium-js
     distribute: true
     steps:
+      - name: envlist
+        script: env | grep -e '^GITHUB_SHA=' -e '^GITHUB_REF=' -e '^GITHUB_EVENT_NAME=' -e '^RUNNER_OS='
       - name: Affected build
         script: npx nx affected -t build test
   checks:
