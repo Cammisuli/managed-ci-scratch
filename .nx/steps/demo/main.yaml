@@ -1,0 +1,11 @@
+name: Greeter
+description: Shows template inputs and state saved for the post step
+inputs:
+  - name: greeting
+    default: hello
+  - name: target
+    default: world
+definition:
+  using: node
+  main: .nx/steps/demo/main.js
+  post: .nx/steps/demo/post.js

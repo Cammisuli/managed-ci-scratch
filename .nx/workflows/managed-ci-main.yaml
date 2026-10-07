@@ -1,4 +1,4 @@
-# verify 23
+# Step environment demo: Nx Cloud names first, GitHub names kept as aliases.
 triggers:
   main-pushes:
     event: PUSH
@@ -9,63 +9,57 @@ workflows:
   main:
     runs-on: linux-medium-js
     steps:
-      - name: setenv
+      - name: Export env and PATH for later steps
         script: |
-          echo PLAIN=plain-value >> $GITHUB_ENV
-          printf 'MULTI<<EOF\nline-one\nline-two\nEOF\n' >> $GITHUB_ENV
-          mkdir -p $RUNNER_TEMP/bin
-          printf '#!/bin/sh\necho from-path-bin\n' > $RUNNER_TEMP/bin/hello
-          chmod +x $RUNNER_TEMP/bin/hello
-          echo $RUNNER_TEMP/bin >> $GITHUB_PATH
-      - name: readenv
-        script: echo plain=$PLAIN; echo "$MULTI"; hello
-      - group-name: par
+          echo "GREETING=hello from an earlier step" >> $GITHUB_ENV
+          mkdir -p $NX_CLOUD_RUNNER_TEMP/bin
+          printf '#!/bin/sh\necho "my-tool: found on PATH added by an earlier step"\n' > $NX_CLOUD_RUNNER_TEMP/bin/my-tool
+          chmod +x $NX_CLOUD_RUNNER_TEMP/bin/my-tool
+          echo "$NX_CLOUD_RUNNER_TEMP/bin" >> $NX_CLOUD_PATH
+
+      - name: Read env and PATH
+        script: |
+          echo "GREETING=$GREETING"
+          my-tool
+
+      - group-name: Compute in parallel
         parallel: true
         steps:
-          - name: p1
-            id: p1
-            script: echo val=one >> $GITHUB_OUTPUT; echo ::set-output name=legacy::l-one
-          - name: p2
-            id: p2
-            script: echo val=two >> $GITHUB_OUTPUT; echo ::set-output name=legacy::l-two
-      - name: readout
-        script: echo "out ${{ steps.p1.outputs.val }}/${{ steps.p1.outputs.legacy }} ${{ steps.p2.outputs.val }}/${{ steps.p2.outputs.legacy }}"
-      - name: st
-        uses: Cammisuli/managed-ci-scratch/main/.nx/steps/st/main.yaml
+          - name: Compute version
+            id: version
+            script: echo "value=1.2.3" >> $NX_CLOUD_OUTPUT
+          - name: Compute artifact name (GitHub alias)
+            id: artifact
+            script: echo "name=app-linux-x64.tgz" >> $GITHUB_OUTPUT
+
+      - name: Use step outputs
+        script: |
+          echo "version  = ${{ steps.version.outputs.value }}"
+          echo "artifact = ${{ steps.artifact.outputs.name }}"
+
+      - name: Greeter template
+        uses: Cammisuli/managed-ci-scratch/main/.nx/steps/demo/main.yaml
         inputs:
-          label: hi
-      - name: envlist
-        script: env | grep -e '^GITHUB_SHA=' -e '^GITHUB_REF=' -e '^GITHUB_EVENT_NAME=' -e '^RUNNER_OS='; echo gha=$(env | grep -c '^GITHUB_ACTIONS=') tok=$(env | grep -c -e '^GITHUB_TOKEN=' -e '^GH_TOKEN=')
-      - name: control
+          greeting: hi
+
+      - name: Run context
+        script: |
+          echo "sha        = $NX_CLOUD_SHA"
+          echo "ref        = $NX_CLOUD_REF (name: $NX_CLOUD_REF_NAME)"
+          echo "event      = $NX_CLOUD_EVENT_NAME"
+          echo "repository = $NX_CLOUD_REPOSITORY"
+          echo "checkout   = $NX_CLOUD_REPOSITORY_DIR"
+          echo "runner     = $NX_CLOUD_RUNNER_OS / $NX_CLOUD_RUNNER_ARCH"
+          if [ "$GITHUB_SHA" = "$NX_CLOUD_SHA" ] && [ "$GITHUB_REF" = "$NX_CLOUD_REF" ] && [ "$GITHUB_WORKSPACE" = "$NX_CLOUD_REPOSITORY_DIR" ] && [ "$RUNNER_OS" = "$NX_CLOUD_RUNNER_OS" ]; then
+            echo "GitHub aliases (GITHUB_SHA, GITHUB_REF, GITHUB_WORKSPACE, RUNNER_OS) match"
+          else
+            echo "GitHub aliases differ"
+          fi
+
+      - name: Call the VCS API with the run's token
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        script: echo ctl=$(env | grep -c -e '^GH_TOKEN=')
-      - name: api
+          NX_CLOUD_VCS_TOKEN: ${{ secrets.NX_CLOUD_VCS_TOKEN }}
         script: |
-          curl -s -o /dev/null -w 'api=%{http_code}\n' -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY"
-      - name: nx-setout
-        id: nxo
-        script: |
-          echo nval=nx-one >> $NX_CLOUD_OUTPUT
-          mkdir -p $NX_CLOUD_RUNNER_TEMP/nxbin
-          printf '#!/bin/sh\necho from-nx-path\n' > $NX_CLOUD_RUNNER_TEMP/nxbin/nxhello
-          chmod +x $NX_CLOUD_RUNNER_TEMP/nxbin/nxhello
-          echo $NX_CLOUD_RUNNER_TEMP/nxbin >> $NX_CLOUD_PATH
-      - name: nx-read
-        script: |
-          echo "nxout ${{ steps.nxo.outputs.nval }}"
-          nxhello
-          env | grep -e '^NX_CLOUD_SHA=' -e '^NX_CLOUD_REF=' -e '^NX_CLOUD_REF_NAME=' -e '^NX_CLOUD_EVENT_NAME=' -e '^NX_CLOUD_REPOSITORY=' -e '^NX_CLOUD_REPOSITORY_OWNER=' -e '^NX_CLOUD_REPOSITORY_DIR=' -e '^NX_CLOUD_VCS_SERVER_URL=' -e '^NX_CLOUD_VCS_API_URL=' -e '^NX_CLOUD_RUNNER_' -e '^GITHUB_WORKSPACE=' | sort
-          echo nxws=$(env | grep -c '^NX_CLOUD_WORKSPACE=') nxtok=$(env | grep -c -e '^NX_CLOUD_VCS_TOKEN=')
-      - name: nst
-        uses: Cammisuli/managed-ci-scratch/main/.nx/steps/nst/main.yaml
-        inputs:
-          label: nxhi
-      - name: nx-api
-        script: |
-          curl -s -o /dev/null -w 'nxapi=%{http_code}\n' -H "Authorization: Bearer ${{ secrets.NX_CLOUD_VCS_TOKEN }}" "$NX_CLOUD_VCS_API_URL/repos/$NX_CLOUD_REPOSITORY"
-  checks:
-    runs-on: linux-medium-js
-    steps:
-      - name: Show projects
-        script: npx nx show projects
+          status=$(curl -s -o "$NX_CLOUD_RUNNER_TEMP/repo.json" -w '%{http_code}' -H "Authorization: Bearer $NX_CLOUD_VCS_TOKEN" "$NX_CLOUD_VCS_API_URL/repos/$NX_CLOUD_REPOSITORY")
+          echo "GET $NX_CLOUD_VCS_API_URL/repos/$NX_CLOUD_REPOSITORY -> $status"
+          node -e 'const r = require(process.argv[1]); console.log(`full_name=${r.full_name} default_branch=${r.default_branch}`)' "$NX_CLOUD_RUNNER_TEMP/repo.json"
