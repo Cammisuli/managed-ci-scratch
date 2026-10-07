@@ -1,0 +1,9 @@
+name: Nx state (nst)
+description: Writes NX_CLOUD_STATE in main, reads it in post
+inputs:
+  - name: label
+    default: x
+definition:
+  using: node
+  main: .nx/steps/nst/main.js
+  post: .nx/steps/nst/post.js
