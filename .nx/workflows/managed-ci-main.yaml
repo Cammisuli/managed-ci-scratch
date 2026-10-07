@@ -9,9 +9,18 @@ workflows:
   main:
     runs-on: linux-medium-js
     steps:
-      - name: slow
-        timeout-minutes: 1
-        script: sleep 120; echo late
+      - group-name: par
+        parallel: true
+        steps:
+          - name: par-fail
+            script: sleep 5; exit 1
+          - name: slow-sibling
+            script: echo sibling-started; sleep 120; echo sibling-late
+      - name: after-group
+        script: echo should-not-run-after-group
+      - name: always
+        if: always()
+        script: echo always-ran
   checks:
     runs-on: linux-medium-js
     steps:
