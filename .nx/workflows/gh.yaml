@@ -44,8 +44,8 @@ jobs:
       - name: "shell: sh"
         shell: sh
         run: echo "sh ran the script $0"
-      - name: "shell: python"
-        shell: python
+      - name: "shell: python3 {0} (custom shell)"
+        shell: python3 {0}
         run: |
           import sys
           print("python", sys.version.split()[0], "ran this step")
