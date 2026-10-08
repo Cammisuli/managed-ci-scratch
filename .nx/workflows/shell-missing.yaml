@@ -1,0 +1,17 @@
+name: Shell missing
+on:
+  pull-requests:
+    event: PR
+jobs:
+  check:
+    name: Missing interpreter
+    runs-on: ubuntu-latest
+    steps:
+      - name: "shell: python (not on the image)"
+        shell: python
+        run: print("never")
+      - name: next step
+        run: echo "should be skipped"
+      - name: always step
+        if: always()
+        run: echo "always-ran"
