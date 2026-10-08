@@ -1,0 +1,51 @@
+name: CI
+on:
+  main-pushes:
+    event: PUSH
+    branches:
+      - main
+  pull-requests:
+    event: PR
+
+env:
+  WF_VAR: wf-value
+
+defaults:
+  run:
+    working-directory: sub
+
+jobs:
+  build:
+    name: Build app
+    runs-on: ubuntu-latest
+    env:
+      JOB_VAR: job-value
+    steps:
+      - name: Make sub
+        run: mkdir -p sub
+        working-directory: .
+      - name: Print env and dir
+        run: echo "wf=$WF_VAR job=$JOB_VAR dir=$(basename $PWD)"
+      - name: sh shell
+        shell: sh
+        run: echo "sh0=$0"
+      - name: Template with
+        uses: Cammisuli/managed-ci-scratch/main/.nx/steps/st/main.yaml
+        with:
+          label: hi
+  gated:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/nope'
+    steps:
+      - name: one
+        run: echo gated-one
+      - name: two
+        run: echo gated-two
+  slow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: sleep
+        run: sleep 120
+      - name: after
+        run: echo after
