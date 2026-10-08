@@ -1,4 +1,7 @@
+# GitHub Actions keys in an Nx Cloud workflow:
+# name, on, env, defaults, jobs, runs-on, run, working-directory, shell, uses/with, if, timeout-minutes.
 name: CI
+
 on:
   main-pushes:
     event: PUSH
@@ -8,7 +11,7 @@ on:
     event: PR
 
 env:
-  WF_VAR: wf-value
+  GREETING: hello from the workflow env
 
 defaults:
   run:
@@ -19,33 +22,53 @@ jobs:
     name: Build app
     runs-on: ubuntu-latest
     env:
-      JOB_VAR: job-value
+      AUDIENCE: hello from the job env
+      COMMIT: ${{ github.sha }}
     steps:
-      - name: Make sub
-        run: mkdir -p sub
+      - name: "working-directory: . (overrides defaults.run)"
         working-directory: .
-      - name: Print env and dir
-        run: echo "wf=$WF_VAR job=$JOB_VAR dir=$(basename $PWD)"
-      - name: sh shell
+        run: |
+          mkdir -p sub
+          echo "ran in: $(basename "$PWD") (the repo root)"
+      - name: "defaults.run.working-directory: sub"
+        run: |
+          echo "ran in: $(basename "$PWD")"
+      - name: Workflow, job and step env
+        env:
+          STEP_VAR: hello from the step env
+        run: |
+          echo "workflow env  GREETING=$GREETING"
+          echo "job env       AUDIENCE=$AUDIENCE"
+          echo "step env      STEP_VAR=$STEP_VAR"
+          echo "job env with an expression  COMMIT=$COMMIT"
+      - name: "shell: sh"
         shell: sh
-        run: echo "sh0=$0"
-      - name: Template with
-        uses: Cammisuli/managed-ci-scratch/main/.nx/steps/st/main.yaml
+        run: echo "sh ran the script $0"
+      - name: "shell: python"
+        shell: python
+        run: |
+          import sys
+          print("python", sys.version.split()[0], "ran this step")
+      - name: "uses: + with:"
+        uses: Cammisuli/managed-ci-scratch/main/.nx/steps/demo/main.yaml
         with:
-          label: hi
-  gated:
+          greeting: hi
+          target: Nx Cloud
+
+  skipped:
+    name: Skipped by job if
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/nope'
+    if: github.ref == 'refs/heads/release'
     steps:
-      - name: one
-        run: echo gated-one
-      - name: two
-        run: echo gated-two
-  slow:
+      - name: never runs
+        run: echo "this line is never printed"
+
+  timeout:
+    name: Times out after 1 minute
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
-      - name: sleep
+      - name: sleep 120
         run: sleep 120
-      - name: after
-        run: echo after
+      - name: after the timeout
+        run: echo "this line is never printed"
