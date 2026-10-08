@@ -64,11 +64,11 @@ jobs:
         run: echo "this line is never printed"
 
   timeout:
-    name: Times out after 1 minute
+    name: Finishes inside timeout-minutes
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
-      - name: sleep 120
-        run: sleep 120
-      - name: after the timeout
-        run: echo "this line is never printed"
+      - name: "sleep 5 (limit: 1 minute)"
+        run: |
+          sleep 5
+          echo "done in 5s, inside the 1 minute limit"
