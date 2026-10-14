@@ -1,0 +1,15 @@
+on: push
+launch-templates:
+  lt-tpl:
+    resource-class: 'docker_linux_amd64/small'
+    image: 'docker.io/library/managed-ci-demo-node:20-bookworm'
+    env:
+      HOME: /tmp
+    init-steps:
+      - name: Checkout
+        uses: 'nrwl/nx-cloud-workflows/v5/workflow-steps/checkout/main.yaml'
+jobs:
+  build:
+    runs-on: lt-tpl
+    steps:
+      - run: echo lt
