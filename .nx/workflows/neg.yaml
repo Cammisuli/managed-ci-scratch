@@ -1,0 +1,6 @@
+on: {push: {branches: ['feature/**', '!feature/skip-*']}}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo neg.yaml

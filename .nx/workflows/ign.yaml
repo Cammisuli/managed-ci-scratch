@@ -1,0 +1,6 @@
+on: {push: {branches-ignore: ['feature/skip-*', 'main']}}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ign.yaml
