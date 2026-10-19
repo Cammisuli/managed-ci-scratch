@@ -11,7 +11,7 @@ workflows:
         script: echo build
   test:
     runs-on: local-small
-    needs: nope
+    needs: test
     steps:
       - name: t
         script: echo test
