@@ -6,9 +6,10 @@ triggers:
 workflows:
   build:
     runs-on: local-small
+    timeout-minutes: 1
     steps:
       - name: b
-        script: sleep 300
+        script: sleep 120
   test:
     runs-on: local-small
     needs: build
