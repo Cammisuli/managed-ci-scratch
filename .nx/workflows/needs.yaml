@@ -6,12 +6,13 @@ triggers:
 workflows:
   build:
     runs-on: local-small
+    needs: test
     steps:
       - name: b
         script: echo build
   test:
     runs-on: local-small
-    needs: test
+    needs: build
     steps:
       - name: t
         script: echo test
