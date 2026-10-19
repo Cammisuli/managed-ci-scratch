@@ -8,11 +8,10 @@ workflows:
     runs-on: local-small
     steps:
       - name: b
-        script: exit 1
+        script: sleep 300
   test:
     runs-on: local-small
     needs: build
-    if: always()
     steps:
       - name: t
-        script: echo test-ran-after-failure
+        script: echo test
