@@ -4,14 +4,19 @@ triggers:
     branches:
       - verify28
 workflows:
-  build:
+  lint:
     runs-on: local-small
+    steps:
+      - name: l
+        script: sleep 30
+  build:
+    runs-on: linux-medium-js
     steps:
       - name: b
         script: sleep 90
   test:
     runs-on: local-small
-    needs: build
+    needs: [lint, build]
     steps:
       - name: t
         script: echo test
