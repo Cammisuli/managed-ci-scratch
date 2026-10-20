@@ -8,10 +8,11 @@ workflows:
     runs-on: local-small
     steps:
       - name: b
-        run: echo ok
+        run: exit 1
   test:
     runs-on: local-small
     needs: build
+    if: always()
     steps:
       - name: t
         run: echo "result=${{ needs.build.result }}"
