@@ -6,14 +6,37 @@ triggers:
 workflows:
   build:
     runs-on: local-small
-    outputs:
-      x: ${{ steps.a.outputs.x }}
     steps:
-      - name: b
-        run: echo ok
-  test:
+      - name: build
+        run: echo "building" && sleep 20
+  lint:
+    runs-on: local-small
+    steps:
+      - name: lint
+        run: echo "lint fails on purpose" && exit 1
+  deploy:
     runs-on: local-small
     needs: build
     steps:
-      - name: t
-        run: echo "result=${{ needs.build.result }}"
+      - name: show result
+        run: echo "build result=${{ needs.build.result }}"
+  report:
+    runs-on: local-small
+    needs: [build, lint]
+    if: always()
+    steps:
+      - name: show results
+        run: echo "build=${{ needs.build.result }} lint=${{ needs.lint.result }}"
+  publish:
+    runs-on: local-small
+    needs: lint
+    steps:
+      - name: never runs
+        run: echo "should be skipped"
+  notify:
+    runs-on: local-small
+    needs: publish
+    if: always()
+    steps:
+      - name: show result
+        run: echo "publish result=${{ needs.publish.result }}"
