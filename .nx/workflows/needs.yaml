@@ -6,13 +6,14 @@ triggers:
 workflows:
   build:
     runs-on: local-small
+    outputs:
+      x: ${{ steps.a.outputs.x }}
     steps:
       - name: b
-        run: exit 1
+        run: echo ok
   test:
     runs-on: local-small
     needs: build
-    if: always()
     steps:
       - name: t
         run: echo "result=${{ needs.build.result }}"
