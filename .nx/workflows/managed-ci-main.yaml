@@ -8,6 +8,7 @@ triggers:
 workflows:
   main:
     runs-on: linux-medium-js
+    timeout-minutes: "ten"
     steps:
       - name: Export env and PATH for later steps
         script: |
