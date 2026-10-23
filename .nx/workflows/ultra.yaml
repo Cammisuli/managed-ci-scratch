@@ -1,4 +1,4 @@
-on: {push: {branches: ['verify36-r11-ultra']}}
+on: {push: {event: PUSH, branches: ['verify36-r11-ultra']}}
 env:
   NX_VERBOSE_LOGGING: "true"
 ultracache:
