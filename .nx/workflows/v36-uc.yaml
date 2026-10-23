@@ -1,0 +1,7 @@
+on: push
+ultracache: ./ci/ultracache.yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hi
