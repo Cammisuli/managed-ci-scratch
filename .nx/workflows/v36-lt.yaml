@@ -1,0 +1,7 @@
+on: push
+launch-templates: ./ci/bad.yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo hi
