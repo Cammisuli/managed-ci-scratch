@@ -10,5 +10,7 @@ jobs:
     env:
       NX_VERBOSE_LOGGING: "true"
     steps:
+      - name: Env
+        run: env | grep -e ULTRACACHE -e IO_SNAPSHOT -e VERBOSE || echo none
       - name: Build
         run: npx nx run-many -t build
