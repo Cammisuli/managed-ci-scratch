@@ -1,0 +1,13 @@
+name: verify36 r9
+on:
+  push-branch:
+    event: PUSH
+    branches: [verify36-r9-workers]
+launch-templates: .nx/workflows/agents.yaml
+jobs:
+  main:
+    runs-on: local-small
+    workers: '1 local-small'
+    steps:
+      - name: hello
+        run: echo hello
