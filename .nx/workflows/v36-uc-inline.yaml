@@ -3,12 +3,13 @@ triggers:
     event: PUSH
     branches:
       - verify36-r13-ucfile
-ultracache: ./ci/ultracache.yaml
+ultracache:
+  ignore-reads: [tmp/**]
 jobs:
   build:
     runs-on: linux-medium-js
     env:
       NX_VERBOSE_LOGGING: "true"
     steps:
-      - name: hi
-        script: echo hi
+      - name: show
+        script: echo "UC=$NX_CLOUD_ULTRACACHE_CONFIG"
