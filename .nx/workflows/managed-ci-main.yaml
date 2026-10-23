@@ -5,6 +5,9 @@ triggers:
     branches:
       - main
 
+self-healing:
+  fix-tasks-patterns: 3
+
 workflows:
   main:
     runs-on: linux-medium-js
