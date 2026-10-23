@@ -1,0 +1,9 @@
+on: push
+ultracache: ./ci/ultracache.yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NX_VERBOSE_LOGGING: "true"
+    steps:
+      - run: echo hi
