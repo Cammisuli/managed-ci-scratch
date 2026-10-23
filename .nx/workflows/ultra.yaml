@@ -11,4 +11,4 @@ jobs:
       NX_VERBOSE_LOGGING: "true"
     steps:
       - name: Build
-        run: rm -f pnpm-lock.yaml && npm install --legacy-peer-deps && npx nx run-many -t build
+        run: npx nx run-many -t build
