@@ -1,0 +1,8 @@
+on:
+  pr: {event: PR}
+jobs:
+  main:
+    runs-on: linux-medium-js
+    distribute: true
+    steps:
+      - run: echo hi
