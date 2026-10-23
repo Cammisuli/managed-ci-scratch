@@ -1,4 +1,4 @@
-on: push
+on: {push: {branches: ["verify36-*"]}}
 launch-templates: ./ci/bad.yaml
 jobs:
   build:
