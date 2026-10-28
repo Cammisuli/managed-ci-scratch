@@ -4,13 +4,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "node -e \"console.log('alpha build 14069d'); setTimeout(() => {}, 20000)\""
-      }
-    },
-    "test": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "node -e \"console.log('alpha test pr'); setTimeout(() => {}, 2000)\""
+        "command": "echo \"alpha build on $(hostname) rg=$NX_RUN_GROUP\"; cat /tmp/nx-cloud/$NX_RUN_GROUP/ultracache-config.json; echo; sleep 120"
       }
     }
   }

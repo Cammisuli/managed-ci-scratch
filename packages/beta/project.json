@@ -1,17 +1,10 @@
 {
   "name": "beta",
-  "implicitDependencies": ["alpha"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "node -e \"console.log('beta build'); setTimeout(() => {}, 2000)\""
-      }
-    },
-    "test": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "node -e \"console.log('beta test'); setTimeout(() => {}, 2000)\""
+        "command": "echo \"beta build on $(hostname)\"; cat verify-canonical/input.txt; cat packages/beta/stamp.txt"
       }
     }
   }

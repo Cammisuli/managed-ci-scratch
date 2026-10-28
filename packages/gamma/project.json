@@ -4,13 +4,7 @@
     "build": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "node -e \"console.log('gamma build'); setTimeout(() => {}, 2000)\""
-      }
-    },
-    "test": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "node -e \"console.log('gamma test'); setTimeout(() => {}, 2000)\""
+        "command": "echo \"gamma build on $(hostname) rg=$NX_RUN_GROUP\"; echo \"WORKER_CANONICAL_UC=$(cat /tmp/nx-cloud/$NX_RUN_GROUP/ultracache-config.json)\""
       }
     }
   }
