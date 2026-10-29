@@ -1,0 +1,30 @@
+on: {push: {event: PUSH, branches: ['verify5566']}}
+env:
+  FILE_ENV: from-file
+  SECRET_FROM_TEMPLATE: "{{ secrets.DEMO_SECRET }}"
+jobs:
+  fixed:
+    runs-on: linux-medium-js
+    workers: 2
+    env:
+      JOB_ENV: from-job-fixed
+    steps:
+      - name: Main env
+        run: |
+          echo "MAIN host=$(hostname) rg=$NX_RUN_GROUP DISTRIBUTED=$NX_CLOUD_DISTRIBUTED_EXECUTION FOO=$( [ -n "$FOO" ] && echo set || echo '<unset>')"
+          ls .nx/ci-config.yaml 2>&1 || true
+      - name: Probe on workers
+        run: npx nx run-many -t probe
+  sized:
+    runs-on: linux-medium-js
+    workers:
+      small: 1
+      medium: 2
+      large: 3
+    env:
+      JOB_ENV: from-job-sized
+    steps:
+      - name: Main env
+        run: echo "MAIN host=$(hostname) rg=$NX_RUN_GROUP DISTRIBUTED=$NX_CLOUD_DISTRIBUTED_EXECUTION"
+      - name: Probe on workers
+        run: npx nx run-many -t probe

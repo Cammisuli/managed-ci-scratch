@@ -1,0 +1,13 @@
+{
+  "name": "probe-b",
+  "targets": {
+    "probe": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": {
+        "command": "sh ../../probe.sh probe-b",
+        "cwd": "packages/probe-b"
+      }
+    }
+  }
+}
