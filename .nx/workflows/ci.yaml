@@ -2,13 +2,11 @@ name: verify39 workers sizing
 on:
   push-branch:
     event: PUSH
-    branches: [verify39-1, verify39-2]
+    branches: [verify39-1, verify39-2, verify39-4]
 launch-templates: .nx/workflows/agents.yaml
 jobs:
   main:
     runs-on: local-small
-    env:
-      NX_VERBOSE_LOGGING: 'true'
     workers:
       small: 1 local-small
       medium: 2 local-small
