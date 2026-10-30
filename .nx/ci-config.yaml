@@ -1,2 +1,5 @@
 dte:
-  distribute-on: 2 linux-medium-js
+  distribute-on:
+    small-changeset: 1 local-small
+    medium-changeset: 2 local-small
+    large-changeset: 3 local-small
