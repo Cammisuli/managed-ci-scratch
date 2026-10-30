@@ -7,6 +7,8 @@ launch-templates: .nx/workflows/agents.yaml
 jobs:
   main:
     runs-on: local-small
+    env:
+      NX_CLOUD_VERBOSE_LOGGING: 'false'
     workers:
       small: 1 local-small
       medium: 2 local-small
