@@ -1,6 +1,0 @@
-on: {push: {branches: [main], paths-ignore: ['docs/**']}}
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo paths.yaml

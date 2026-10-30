@@ -1,0 +1,18 @@
+name: verify39 workers sizing
+on:
+  push-branch:
+    event: PUSH
+    branches: [verify39-1, verify39-2]
+launch-templates: .nx/workflows/agents.yaml
+jobs:
+  main:
+    runs-on: local-small
+    env:
+      NX_VERBOSE_LOGGING: 'true'
+    workers:
+      small: 1 local-small
+      medium: 2 local-small
+      large: 3 local-small
+    steps:
+      - name: nx run-many build test
+        run: npx nx run-many -t build test
