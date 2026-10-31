@@ -1,1 +1,1 @@
-export const ui = "design system v1";
+export const ui = "design system v7";

@@ -12,6 +12,8 @@ jobs:
       medium: 2 local-small
       large: 3 local-small
     steps:
+      - name: Hold before Nx
+        run: sleep 60
       - name: Build core
         run: npx nx run-many -t build -p core
       - name: Build and test everything
