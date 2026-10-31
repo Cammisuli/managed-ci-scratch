@@ -12,9 +12,7 @@ jobs:
       medium: 2 local-small
       large: 3 local-small
     steps:
-      - name: Warm up
-        run: |
-          echo "Starting on the small size: 1 worker. Nx Cloud sizes the workers when the Nx command starts."
-          sleep 30
-      - name: Build and test
+      - name: Build core
+        run: npx nx run-many -t build -p core
+      - name: Build and test everything
         run: npx nx run-many -t build test
