@@ -1,8 +1,8 @@
 name: Worker sizing demo
 on:
-  pull-requests:
-    event: PR
-    branches: [demo-base]
+  verify-wake:
+    event: PUSH
+    branches: [verify-wake]
 launch-templates: .nx/workflows/agents.yaml
 jobs:
   main:
