@@ -1,1 +1,1 @@
-export const core = "shared core v1";
+export const core = "shared core v2";
