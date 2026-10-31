@@ -1,0 +1,20 @@
+{
+  "name": "worker",
+  "implicitDependencies": [
+    "data"
+  ],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/work.js worker build 15"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/work.js worker test 8"
+      }
+    }
+  }
+}

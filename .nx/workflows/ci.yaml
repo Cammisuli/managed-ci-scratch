@@ -1,0 +1,19 @@
+name: Worker sizing demo
+on:
+  seed:
+    event: PUSH
+    branches: [demo-base]
+  pull-requests:
+    event: PR
+    branches: [demo-base]
+launch-templates: .nx/workflows/agents.yaml
+jobs:
+  main:
+    runs-on: local-small
+    workers:
+      small: 1 local-small
+      medium: 2 local-small
+      large: 3 local-small
+    steps:
+      - name: Build and test
+        run: npx nx run-many -t build test

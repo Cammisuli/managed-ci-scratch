@@ -1,0 +1,20 @@
+{
+  "name": "data",
+  "implicitDependencies": [
+    "core"
+  ],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/work.js data build 15"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/work.js data test 8"
+      }
+    }
+  }
+}

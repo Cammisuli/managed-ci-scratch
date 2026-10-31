@@ -1,0 +1,20 @@
+{
+  "name": "ui",
+  "implicitDependencies": [
+    "core"
+  ],
+  "targets": {
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/work.js ui build 15"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node tools/work.js ui test 8"
+      }
+    }
+  }
+}
