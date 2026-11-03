@@ -21,3 +21,7 @@ jobs:
         run: npx nx run-many -t mjw-nested
       - name: last
         run: pgrep -af 'start-worker --background' && npx nx run-many -t mjw-last
+      - name: worker-log
+        run: |
+          cat .nx/cache/main-job-workers/*/worker.log
+          grep -c 'mjw plain inner task' .nx/cache/main-job-workers/*/worker.log
