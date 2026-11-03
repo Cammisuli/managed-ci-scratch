@@ -3,12 +3,13 @@ on:
   pushes:
     event: PUSH
     branches: ['v392/**']
+launch-templates: .nx/workflows/agents.yaml
 jobs:
   main:
-    runs-on: linux-medium-js
+    runs-on: local-small
     workers:
-      workers: 1 linux-medium-js
-      main-job-worker: {cpu: 2, memory: 4GB}
+      workers: 1 local-small
+      main-job-worker: {cpu: 2, memory: "6GB; id"}
       assignment-rules:
         - targets: ['mjw-*']
           run-on:
