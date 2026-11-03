@@ -17,6 +17,8 @@ jobs:
           run-on:
             - agent: main
     steps:
+      - name: all-targets
+        run: npx nx run-many -t mjw-first mjw-nested mjw-last plain
       - name: mjw-first
         run: npx nx run-many -t mjw-first
       - name: mjw-nested
