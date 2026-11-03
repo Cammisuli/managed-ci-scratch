@@ -1,0 +1,23 @@
+name: MJW verify
+on:
+  pushes:
+    event: PUSH
+    branches: ['v392/**']
+launch-templates: .nx/workflows/agents.yaml
+jobs:
+  main:
+    runs-on: local-small
+    workers:
+      workers: 1 local-small
+      main-job-worker: {cpu: 2, memory: 4GB}
+      assignment-rules:
+        - targets: ['mjw-*']
+          run-on:
+            - agent: main
+    steps:
+      - name: mjw-first
+        run: npx nx run-many -t mjw-first
+      - name: mjw-nested
+        run: npx nx run-many -t mjw-nested
+      - name: last
+        run: pgrep -af 'start-worker --background' && npx nx run-many -t mjw-last

@@ -1,0 +1,25 @@
+{
+  "name": "mjw",
+  "targets": {
+    "mjw-first": {
+      "cache": false,
+      "executor": "nx:run-commands",
+      "options": { "command": "node -e \"console.log('mjw-first on', process.env.NX_CLOUD_AGENT_NAME||'?', require('os').hostname()); setTimeout(()=>{},4000)\"" }
+    },
+    "plain": {
+      "cache": false,
+      "executor": "nx:run-commands",
+      "options": { "command": "node -e \"console.log('mjw plain inner task'); setTimeout(()=>{},1000)\"" }
+    },
+    "mjw-nested": {
+      "cache": false,
+      "executor": "nx:run-commands",
+      "options": { "command": "npx nx run mjw:plain --skip-nx-cache" }
+    },
+    "mjw-last": {
+      "cache": false,
+      "executor": "nx:run-commands",
+      "options": { "command": "node -e \"console.log('mjw-last on', require('os').hostname()); setTimeout(()=>{},4000)\"" }
+    }
+  }
+}
