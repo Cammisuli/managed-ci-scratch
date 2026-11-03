@@ -3,14 +3,18 @@ on:
   pushes:
     event: PUSH
     branches: ['v392/**']
+launch-templates: .nx/workflows/agents.yaml
 jobs:
   main:
-    runs-on: linux-medium-js
+    runs-on: local-small
     workers:
-      workers: 1 linux-medium-js
+      workers: 1 local-small
       main-job-worker: {cpu: 2, memory: 4GB}
       assignment-rules:
-        - targets: ['mjw-*']
+        - targets: ['mjw-nested']
+          run-on:
+            - agent: local-small
+        - targets: ['mjw-first', 'mjw-last']
           run-on:
             - agent: main
     steps:
