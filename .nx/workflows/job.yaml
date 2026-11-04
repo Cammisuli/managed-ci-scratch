@@ -1,0 +1,19 @@
+name: v393 verify
+on:
+  pushes:
+    event: PUSH
+    branches: ['v393/**']
+launch-templates: .nx/workflows/agents.yaml
+jobs:
+  main:
+    runs-on: linux-medium-js
+    env:
+      NX_VERBOSE_LOGGING: 'true'
+    workers: sized
+    steps:
+      - name: sz
+        env:
+          NX_VERBOSE_LOGGING: 'true'
+        run: echo "NX_VERBOSE_LOGGING=$NX_VERBOSE_LOGGING" && npx nx run-many -t sz-work
+worker-templates:
+  sized: {small: {count: 1, workload: 10%}, medium: {count: 4, workload: 80%}, large: 6}
