@@ -1,0 +1,10 @@
+{
+  "name": "Q",
+  "targets": {
+    "sz-rest": {
+      "executor": "nx:run-commands",
+      "inputs": ["{projectRoot}/stamp.txt"],
+      "options": { "command": "echo sz-rest Q" }
+    }
+  }
+}

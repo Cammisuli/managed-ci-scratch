@@ -1,0 +1,10 @@
+{
+  "name": "P",
+  "targets": {
+    "sz-work": {
+      "executor": "nx:run-commands",
+      "inputs": ["{projectRoot}/stamp.txt"],
+      "options": { "command": "echo sz-work P" }
+    }
+  }
+}
