@@ -6,6 +6,7 @@ launch-templates: .nx/workflows/agents.yaml
 jobs:
   main:
     runs-on: linux-medium-js
+    permissions: { repository-contents: write }
     steps:
       - name: Probe
         run: |
