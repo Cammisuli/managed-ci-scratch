@@ -23,8 +23,5 @@ jobs:
   fix-ci:
     runs-on: linux-medium-js
     steps:
-      - name: Fail a task
-        run: npx nx run probe:fail
       - name: Fix CI
-        if: failure()
         run: npx nx-cloud fix-ci
