@@ -1,0 +1,15 @@
+{
+  "name": "probe",
+  "targets": {
+    "probe": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": { "command": "echo \"task-on-worker env=[$FORK_PROBE] NX_CLOUD_IS_FORK=[$NX_CLOUD_IS_FORK]\"" }
+    },
+    "fail": {
+      "executor": "nx:run-commands",
+      "cache": false,
+      "options": { "command": "echo failing on purpose && exit 1" }
+    }
+  }
+}
