@@ -1,0 +1,27 @@
+name: fork probe
+on:
+  pull-requests:
+    event: PR
+launch-templates: .nx/workflows/agents.yaml
+jobs:
+  main:
+    runs-on: linux-medium-js
+    steps:
+      - name: Probe
+        run: |
+          echo "secret=[{{ secrets.FORK_PROBE }}] env=[$FORK_PROBE] fork=${{ nxcloud.is_fork }}"
+          exit 1
+  distributed:
+    runs-on: linux-medium-js
+    steps:
+      - name: Probe on the job
+        run: echo "secret=[{{ secrets.FORK_PROBE }}] env=[$FORK_PROBE] fork=${{ nxcloud.is_fork }}"
+      - name: Distribute to a worker
+        run: |
+          npx nx-cloud start-ci-run --distribute-on="1 local-probe" --stop-agents-after=probe
+          npx nx run-many -t probe
+  fix-ci:
+    runs-on: linux-medium-js
+    steps:
+      - name: Fix CI
+        run: npx nx-cloud fix-ci
