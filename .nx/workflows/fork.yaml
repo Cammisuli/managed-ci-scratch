@@ -1,0 +1,24 @@
+name: fork demo
+on:
+  pull-requests:
+    event: PR
+launch-templates: .nx/workflows/agents.yaml
+jobs:
+  main:
+    runs-on: linux-medium-js
+    steps:
+      - name: Show the fork context
+        run: |
+          echo "Running in Nx Cloud CI from a fork: ${{ nxcloud.is_fork }}"
+          echo "Workspace secret FORK_PROBE as this run sees it: [{{ secrets.FORK_PROBE }}]"
+      - name: Simulate a build
+        run: |
+          for i in $(seq 1 6); do echo "building... step $i of 6"; sleep 5; done
+          echo "build done"
+  distributed:
+    runs-on: linux-medium-js
+    steps:
+      - name: Distribute to a worker
+        run: |
+          npx nx-cloud start-ci-run --distribute-on="1 local-probe" --stop-agents-after=probe
+          npx nx run-many -t probe
