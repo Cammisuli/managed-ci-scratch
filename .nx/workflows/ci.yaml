@@ -1,5 +1,8 @@
 name: D2
-on: push
+on:
+  pushes:
+    event: PUSH
+    branches: [verify42-d2]
 launch-templates:
   lt-sec:
     resource-class: 'docker_linux_amd64/small'
@@ -16,8 +19,7 @@ launch-templates:
 jobs:
   main:
     runs-on: lt-sec
-    workers:
-      w: 1 lt-sec
+    workers: 1 lt-sec
     steps:
       - run: |
           echo "unmapped len=${#NPM_TOKEN} nv=[$NODE_VERSION]"
