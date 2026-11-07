@@ -15,6 +15,8 @@ launch-templates:
         uses: 'nrwl/nx-cloud-workflows/v5/workflow-steps/checkout/main.yaml'
       - name: probe
         script: echo "w tok=$NPM_TOKEN len=${#NPM_TOKEN} lt=$LT_TOKEN ltlen=${#LT_TOKEN} fn=$FN sha=$SHA"
+      - name: Install dependencies
+        script: npm install
 jobs:
   main:
     runs-on: lt-sec
