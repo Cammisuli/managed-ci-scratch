@@ -1,4 +1,4 @@
-on: push
+on: {push: {event: PUSH}}
 env:
   NPM_TOKEN: '${{ secrets.NPM_TOKEN }}'
   FN: "${{ format('node-{0}', vars.NODE_VERSION) }}"
