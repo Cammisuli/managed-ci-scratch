@@ -2,7 +2,7 @@ name: D2
 on:
   pushes:
     event: PUSH
-    branches: [verify42-d2]
+    branches: [verify42-d2b]
 launch-templates:
   lt-sec:
     resource-class: 'docker_linux_amd64/small'
