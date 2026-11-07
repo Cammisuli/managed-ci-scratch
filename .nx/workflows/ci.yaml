@@ -1,5 +1,7 @@
 name: D
-on: pull_request
+on:
+  pull-requests:
+    event: PR
 env:
   NPM_TOKEN: '${{ secrets.NPM_TOKEN }}'
   FN: "${{ format('node-{0}', vars.NODE_VERSION) }}"
