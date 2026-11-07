@@ -1,0 +1,27 @@
+name: D
+on:
+  pull-requests:
+    event: PR
+env:
+  NPM_TOKEN: '${{ secrets.NPM_TOKEN }}'
+  FN: "${{ format('node-{0}', vars.NODE_VERSION) }}"
+  SHA: '${{ nxcloud.sha }}'
+launch-templates:
+  lt-sec:
+    resource-class: 'docker_linux_amd64/small'
+    image: 'docker.io/library/managed-ci-demo-node:20-bookworm'
+    env:
+      HOME: /tmp
+      LT_TOKEN: '${{ secrets.NPM_TOKEN }}'
+    init-steps:
+      - name: Checkout
+        uses: 'nrwl/nx-cloud-workflows/v5/workflow-steps/checkout/main.yaml'
+      - name: probe
+        script: |
+          echo "w tok=$NPM_TOKEN len=${#NPM_TOKEN} lt=$LT_TOKEN ltlen=${#LT_TOKEN} fn=$FN sha=$SHA"
+jobs:
+  main:
+    runs-on: lt-sec
+    workers: 1 lt-sec
+    steps:
+      - run: echo "old={{ secrets.NPM_TOKEN }}"
