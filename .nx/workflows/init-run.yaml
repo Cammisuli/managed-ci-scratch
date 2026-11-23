@@ -1,0 +1,26 @@
+# Does a launch template's init-steps accept `run` as well as `script`?
+triggers:
+  path-demo-pushes:
+    event: PUSH
+    branches:
+      - nx-cloud-path-demo
+
+launch-templates:
+  init-run-check:
+    resource-class: 'docker_linux_amd64/small'
+    image: 'docker.io/library/managed-ci-demo-node:20-bookworm'
+    env:
+      HOME: /tmp
+    init-steps:
+      - name: init step with run
+        run: echo "INIT-RUN-OK"
+      - name: init step with script
+        script: echo "INIT-SCRIPT-OK"
+
+workflows:
+  init-run:
+    runs-on: init-run-check
+    workers: false
+    steps:
+      - name: job step
+        run: echo "JOB-RUN-OK"
