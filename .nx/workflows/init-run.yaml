@@ -13,7 +13,7 @@ launch-templates:
       HOME: /tmp
     init-steps:
       - name: init step with run
-        run: echo "INIT-RUN-OK"
+        script: echo "INIT-RUN-OK"
       - name: init step with script
         script: echo "INIT-SCRIPT-OK"
 
