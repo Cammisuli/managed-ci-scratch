@@ -1,0 +1,45 @@
+# NX_CLOUD_PATH demo, shaped like brainco's setup: a step downloads uv into a
+# tools dir under the checkout and adds it to NX_CLOUD_PATH; a later step runs
+# uv directly and through an Nx task whose cwd is the project directory.
+triggers:
+  path-demo-pushes:
+    event: PUSH
+    branches:
+      - nx-cloud-path-demo
+
+workflows:
+  absolute-path:
+    runs-on: linux-medium-js
+    steps:
+      - name: Install uv, add its absolute dir to NX_CLOUD_PATH
+        script: |
+          tools_dir=.tools
+          mkdir -p "$tools_dir/uv"
+          curl -fsSL https://github.com/astral-sh/uv/releases/download/0.13.6/uv-x86_64-unknown-linux-gnu.tar.gz -o "$tools_dir/uv.tar.gz"
+          tar -xzf "$tools_dir/uv.tar.gz" -C "$tools_dir/uv" --strip-components=1
+          realpath "$tools_dir/uv" >> "$NX_CLOUD_PATH"
+          echo "NX_CLOUD_PATH file now holds:"; cat "$NX_CLOUD_PATH"
+      - name: uv from the repo root
+        script: |
+          command -v uv
+          uv --version
+      - name: uv from an Nx task (cwd packages/uvdemo)
+        script: npx nx run uvdemo:install --skip-nx-cache
+
+  relative-path:
+    runs-on: linux-medium-js
+    steps:
+      - name: Install uv, add its RELATIVE dir to NX_CLOUD_PATH
+        script: |
+          tools_dir=.tools
+          mkdir -p "$tools_dir/uv"
+          curl -fsSL https://github.com/astral-sh/uv/releases/download/0.13.6/uv-x86_64-unknown-linux-gnu.tar.gz -o "$tools_dir/uv.tar.gz"
+          tar -xzf "$tools_dir/uv.tar.gz" -C "$tools_dir/uv" --strip-components=1
+          echo "$tools_dir/uv" >> "$NX_CLOUD_PATH"
+          echo "NX_CLOUD_PATH file now holds:"; cat "$NX_CLOUD_PATH"
+      - name: uv from the repo root (works, relative to the root)
+        script: |
+          command -v uv
+          uv --version
+      - name: uv from an Nx task (fails, relative to packages/uvdemo)
+        script: npx nx run uvdemo:install --skip-nx-cache
