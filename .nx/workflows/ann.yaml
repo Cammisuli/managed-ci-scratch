@@ -1,0 +1,14 @@
+name: ann
+
+on:
+  pull_request:
+    event: PR
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write step summary
+        run: echo "## Summary from step" >> "$NX_CLOUD_STEP_SUMMARY"
+      - name: Fail
+        run: exit 1
