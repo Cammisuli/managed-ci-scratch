@@ -1,0 +1,12 @@
+{
+  "name": "uvdemo",
+  "targets": {
+    "install": {
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/uvdemo",
+        "command": "echo \"task cwd: $PWD\" && echo \"PATH=$PATH\" && uv --version"
+      }
+    }
+  }
+}
