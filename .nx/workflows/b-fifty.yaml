@@ -3,6 +3,10 @@ name: b-fifty
 on:
   pull-requests:
     event: PR
+  branch-pushes:
+    event: PUSH
+    branches:
+      - cloud-6524-cap
 
 jobs:
   job01:
