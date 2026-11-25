@@ -1,0 +1,11 @@
+name: c-one
+
+on:
+  pull-requests:
+    event: PR
+
+jobs:
+  only:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok

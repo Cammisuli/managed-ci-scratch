@@ -1,0 +1,207 @@
+name: b-fifty
+
+on:
+  pull-requests:
+    event: PR
+
+jobs:
+  job01:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job02:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job03:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job04:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job05:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job06:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job07:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job08:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job09:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job10:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job11:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job12:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job13:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job14:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job15:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job16:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job17:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job18:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job19:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job20:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job21:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job22:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job23:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job24:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job25:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job26:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job27:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job28:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job29:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job30:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job31:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job32:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job33:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job34:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job35:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job36:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job37:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job38:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job39:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job40:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job41:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job42:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job43:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job44:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job45:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job46:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job47:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job48:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job49:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
+  job50:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ok
